@@ -28,7 +28,8 @@ class GameScene extends Phaser.Scene{
     create(){
         const width = this.scale.width;
         const height = this.scale.height;
-
+        this.isGameOver=false;
+        this.life=3;
         // configuracion responsive
         if (width < 768) {  // Condición para dispositivos móviles
             this.scaleFactor = 3; 
@@ -158,7 +159,7 @@ class GameScene extends Phaser.Scene{
         if(this.isGameOver){
             return;
         }
-        if(this.timeTotal<=0||this.life==0){
+        if(this.timeTotal<=0||this.life<=0){
             this.gameOver();
         }
         // actualizar la lista de peces

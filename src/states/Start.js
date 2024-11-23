@@ -7,14 +7,15 @@ class StartScene extends Phaser.Scene {
 
     init(){
         this.backsoundplay = this.sound.get('background_music');
-        if (this.backsoundplay) {
-            this.backsoundplay.stop();
+
+        // Si la música existe y no se está reproduciendo, iníciala
+        if (!this.backsoundplay) {
+            this.backsoundplay = this.sound.add('background_music', { loop: true });
+            this.backsoundplay.play();
+        } else if (!this.backsoundplay.isPlaying) {
+            // Si la música está cargada pero no está sonando, la reproduce
+            this.backsoundplay.play();
         }
-        this.backsound = this.sound.add('background_music');
-        // Validador para no repetir la música
-        this.backsound.play({
-            loop: true,
-        });
     }
     create() {
         this.add.image(0, 0, 'portada')
