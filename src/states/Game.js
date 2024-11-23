@@ -151,7 +151,7 @@ class GameScene extends Phaser.Scene{
 
         
     }
-    update(){
+    update(time,delta){
         if (!this.isHooked){
         this.hook.setOrigin(0.37,0)
         }
@@ -163,13 +163,13 @@ class GameScene extends Phaser.Scene{
         }
         // actualizar la lista de peces
         this.fishGroup.getChildren().forEach(fish => {
-            fish.update();
+            fish.update(time,delta);
         });
         this.JellyFishGroup.getChildren().forEach(Jellyfish => {
-            Jellyfish.update();
+            Jellyfish.update(time,delta);
         });
         this.Bootgroup.getChildren().forEach(Boot => {
-            Boot.update();
+            Boot.update(time,delta);
         });
         this.Sharkgroup.getChildren().forEach(shark => {
             if (shark.x>this.game.config.width/8 && shark.x<this.game.config.width-this.game.config.width*5/9&&shark.key !== 'shark2'){
@@ -177,7 +177,7 @@ class GameScene extends Phaser.Scene{
             }else if(shark.key !== 'shark1'){
                 shark.setTexture('shark1');
             }
-            shark.update();
+            shark.update(time,delta);
         });
         
         //actualizar la cuerda de pescar
@@ -263,7 +263,6 @@ class GameScene extends Phaser.Scene{
     }
 
     updatePenguin() {
-        
         const cursorY = this.input.activePointer.y;
         if (this.isDamaged){
             if (!this.player.anims.isPlaying) {
@@ -368,24 +367,30 @@ class GameScene extends Phaser.Scene{
         });
     }
 
-    startShark(){
-        //crear ala de tiburon
-        this.entranceShark=this.add.image(-50,this.game.config.height-39,'entrance_shark');
-        this.entranceShark.setScale(1.32)
-        this.sharkAudio.play()
+    startShark() {
+        // Crear el tiburón en la posición inicial
+        this.entranceShark = this.add.image(-50, this.game.config.height - 39, 'entrance_shark');
+        this.entranceShark.setScale(1.32);
+        this.sharkAudio.play();
+    
+        // Calcular la distancia total y la duración en función de la velocidad
+        const distance = this.sys.game.config.width + 250; // Distancia desde -50 hasta fuera del límite derecho
+        const speed = 600; // Velocidad deseada en píxeles por segundo
+        const duration = (distance / speed) * 1000; // Convertimos la velocidad en duración
+    
         this.tweens.add({
-            targets: this.entranceShark, 
-            x: this.sys.game.config.width + 200, 
-            duration: 2550,  // Duración de la animación en milisegundos (ajustable)
-            ease: 'Linear', 
-            onComplete: () => {  
-                this.entranceShark.destroy();  
+            targets: this.entranceShark,
+            x: this.sys.game.config.width + 200,
+            duration: duration,  // Duración calculada dinámicamente
+            ease: 'Linear',
+            onComplete: () => {
+                this.entranceShark.destroy();
                 const Shark = new SharkPrefab(this);
                 this.Sharkgroup.add(Shark);
             }
         });
-
     }
+    
 
     restart(){
         this.scene.start('StartScene')

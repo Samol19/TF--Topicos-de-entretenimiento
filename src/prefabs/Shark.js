@@ -10,7 +10,7 @@ class SharkPrefab extends Phaser.Physics.Arcade.Sprite {
         // Añadimos el pez a la escena
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.speed = 2.94;
+        this.speed = 500;
         
         // dirección inicial (1 = derecha, -1 = izquierda)
         this.direction =1;
@@ -24,14 +24,14 @@ class SharkPrefab extends Phaser.Physics.Arcade.Sprite {
     }
 
     // Método de actualización que se llama en cada frame
-    update() {
-        this.x += this.speed * this.direction;
-
-        // si el pez sale por los limites se elimina
+    update(time, delta) {
+        // Convertimos la velocidad de píxeles por segundo a píxeles por frame
+        this.x += this.speed * this.direction * (delta / 1000); // delta en ms, se convierte a segundos
+    
+        // Si el pez sale por los límites, se elimina
         if (this.x < this.leftLimit || this.x > this.rightLimit) {
-            this.destroy(); 
+            this.destroy();
         }
-
     }
 }
 
