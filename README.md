@@ -1,4 +1,4 @@
-TF Tópicos de entretenimiento - IceFishing    
+TF Tópicos de software de entretenimiento - IceFishing    
 Alumno: Fernando Samuel Paredes Espinoza.    
 Código: U202122837.    
 Ciclo: 2024-2    
